@@ -169,13 +169,7 @@ class PerformanceBenchmark:
 
 # Create the main code to run the benchmarking 
 
-if __name__=="__main__":
-
-    # Get model, tokenizer and dataset 
-
-    # TODO
-
-
+def evaluate_model(model, tokenizer, dataset):
     # Instantiate the PerformanceBenchmark class with the model, tokenizer, and test dataset
     benchmark = PerformanceBenchmark(model, tokenizer, dataset['test'])
 
