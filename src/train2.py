@@ -6,12 +6,13 @@ from trl import SFTTrainer
 def train(model,
           tokenizer, 
           training_arguments,
-          lora_config,
-          peft_config,
-          sft_config, 
-          rlhf_config,
           dataset,
-          device, output_dir,):
+          device,
+          output_dir,
+          lora_config = None,
+          peft_config = None,
+          sft_config = None, 
+          rlhf_config = None,):
 
 
     if lora_config:
@@ -45,12 +46,15 @@ def train(model,
 
     training_arguments = training_arguments
 
+    # TODO : Tokenize the dataset
+    tokenized_dataset = ""
+
     # Create a new SFTTrainer instance
     trainer = SFTTrainer(
         model=model,                          # The pre-trained and prepared model
-        train_dataset=tokenized_dataset['train'],  # Training dataset
-        eval_dataset=tokenized_dataset['test'],    # Evaluation dataset             # LoRA configuration for efficient fine-tuning
-        max_seq_length=512,                   # Maximum sequence length for inputs
+        train_dataset = tokenized_dataset['train'],  # Training dataset
+        eval_dataset = tokenized_dataset['test'],    # Evaluation dataset             # LoRA configuration for efficient fine-tuning
+        max_seq_length = 512,                   # Maximum sequence length for inputs
         tokenizer=tokenizer,                  # Tokenizer for encoding the data
         args=training_arguments,              # Training arguments defined earlier
     )
