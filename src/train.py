@@ -15,7 +15,7 @@ import time
 from utils import get_dataset
 
 # TODO Datasets
-DATASET = "READ_DATA"       # If "READ_DATA" searches for folder data and uploads all data there
+DATASET = "FOLDER_DATA"       # If "READ_DATA" searches for folder data and uploads all data there
 DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 # TODO ModelType
