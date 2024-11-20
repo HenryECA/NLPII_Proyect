@@ -11,8 +11,7 @@ def train(model,
           output_dir,
           lora_config = None,
           peft_config = None,
-          sft_config = None, 
-          rlhf_config = None,):
+          sft_config = None,):
 
 
     if lora_config:
@@ -35,13 +34,6 @@ def train(model,
     #     '''
     #     sft_config = sft_config
     #     model = get_peft_model(model, sft_config)
-    
-    # if rlhf_config:
-    #     '''
-    #     Applies RLHF to the model
-    #     '''
-    #     rlhf_config = rlhf_config
-    #     model = get_peft_model(model, rlhf_config)
 
 
     training_arguments = training_arguments
