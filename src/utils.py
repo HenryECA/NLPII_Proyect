@@ -10,7 +10,27 @@ KEYWORD = "FOLDER_DATA"     # Reads all data from the data folder
 
 dataset_names = ["databricks/databricks-dolly-15k", "yahma/alpaca-cleaned", "dkoterwa/oasst2_filtered"]     # "GAIR/lima", 
 
-def get_dataset(dataset: str, limit = None):
+def format_dataset(parsed_dataset, limit = None, test_split = 0.2):
+
+    if 'test' not in parsed_dataset.keys() and test_split:
+        # Split the dataset into 80/20 train/test if test split is missing
+        train_test_split = parsed_dataset['train'].train_test_split(test_size=test_split)
+        parsed_dataset = DatasetDict({
+            "train": train_test_split['train'],
+            "test": train_test_split['test']
+        })
+
+    if limit:
+        train_limit = limit
+        test_limit = int(limit * 0.2)
+
+        # Shuffle datasets and apply limits
+        parsed_dataset['train'] = parsed_dataset['train'].shuffle(seed=42).select(range(min(len(parsed_dataset['train']), train_limit)))
+        parsed_dataset['test'] = parsed_dataset['test'].shuffle(seed=42).select(range(min(len(parsed_dataset['test']), test_limit)))
+
+    return parsed_dataset
+
+def get_dataset(dataset: str, limit = None, test_split = 0.2):
     """
     This function loads datasets either from disk (if they exist) or downloads them from Hugging Face and saves them locally.
     
@@ -35,9 +55,11 @@ def get_dataset(dataset: str, limit = None):
         
         else:
             try:
-                tokenized_dataset = parse_dataset(dataset_name=dataset, limit=limit)
+                tokenized_dataset = parse_dataset(dataset_name=dataset)
             except Exception as e:
                 raise Exception('There has been an error while downloading the data from Hugging face:\n' + e, )
+            
+        tokenized_dataset = format_dataset(tokenized_dataset, limit, test_split)
 
     else:
         # Process all datasets in the data folder
@@ -56,6 +78,8 @@ def get_dataset(dataset: str, limit = None):
                     try:
                         tokenized_dataset_read = load_from_disk(dataset_folder)
 
+                        tokenized_dataset_read = format_dataset(tokenized_dataset_read, limit, test_split)
+
                         if tokenized_dataset:
                             tokenized_dataset['train'] = concatenate_datasets([tokenized_dataset['train'], tokenized_dataset_read['train']])
                             tokenized_dataset['test'] = concatenate_datasets([tokenized_dataset['test'], tokenized_dataset_read['test']])
@@ -65,7 +89,10 @@ def get_dataset(dataset: str, limit = None):
         
         for dataset in dataset_names:
             print('Parsing: ', dataset)
-            tokenized_dataset_read = parse_dataset(dataset, limit=limit)
+            tokenized_dataset_read = parse_dataset(dataset)
+
+            tokenized_dataset_read = format_dataset(tokenized_dataset_read, limit, test_split)
+
             if tokenized_dataset:
                 tokenized_dataset['train'] = concatenate_datasets([tokenized_dataset['train'], tokenized_dataset_read['train']])
                 tokenized_dataset['test'] = concatenate_datasets([tokenized_dataset['test'], tokenized_dataset_read['test']])
@@ -73,7 +100,7 @@ def get_dataset(dataset: str, limit = None):
     return tokenized_dataset
     
 
-def parse_dataset(dataset_name, limit = None):
+def parse_dataset(dataset_name):
 
     '''
     Prompts will have the following structure:
@@ -148,33 +175,20 @@ def parse_dataset(dataset_name, limit = None):
         parsed_dataset = dataset.map(format_lima_conversation, batched=False)
         parsed_dataset = parsed_dataset.remove_columns(['conversations','source'], )
 
-    if "dolly" in dataset_name:
+    elif "dolly" in dataset_name:
         parsed_dataset = dataset.map(format_dolly_prompts, batched=True)
         parsed_dataset = parsed_dataset.remove_columns(['instruction','context', 'response', 'category'], )
 
-    if "alpaca" in dataset_name:
+    elif "alpaca" in dataset_name:
         parsed_dataset = dataset.map(format_alpaca, batched=True)
         parsed_dataset = parsed_dataset.remove_columns(['instruction','input', 'output'], )
 
-    if "oasst" in dataset_name:
+    elif "oasst" in dataset_name:
         parsed_dataset = dataset.map(format_oasst, batched=True)
         parsed_dataset = parsed_dataset.remove_columns(['lang','message_id', 'parent_id', 'user_id', 'created_date', 'query', 'answer', 'review_count', 'answer_len'], )
 
-    if 'test' not in parsed_dataset.keys():
-        # Split the dataset into 80/20 train/test if test split is missing
-        train_test_split = parsed_dataset['train'].train_test_split(test_size=0.2)
-        parsed_dataset = DatasetDict({
-            "train": train_test_split['train'],
-            "test": train_test_split['test']
-        })
-
-    if limit:
-        train_limit = limit
-        test_limit = int(limit * 0.2)
-
-        # Shuffle datasets and apply limits
-        parsed_dataset['train'] = parsed_dataset['train'].shuffle(seed=42).select(range(min(len(parsed_dataset['train']), train_limit)))
-        parsed_dataset['test'] = parsed_dataset['test'].shuffle(seed=42).select(range(min(len(parsed_dataset['test']), test_limit)))
+    else:
+        raise Exception('Dataset format is not programmed')
 
     if not os.path.exists(DATA_FOLDER):
         os.makedirs(DATA_FOLDER)
@@ -193,7 +207,7 @@ if __name__ == "__main__":
 
     # parse_dataset("databricks/databricks-dolly-15k")
 
-    tokenized_dataset = get_dataset(KEYWORD, 15000)
+    tokenized_dataset = get_dataset("dkoterwa/oasst2_filtered", 15000, 0.2)
 
     print('Train: ', len(tokenized_dataset['train']))
-    print('Train: ', len(tokenized_dataset['test']))
+    print('Test: ', len(tokenized_dataset['test']))
