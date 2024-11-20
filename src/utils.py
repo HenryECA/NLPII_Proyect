@@ -9,6 +9,18 @@ DATASET_LIST = ["GAIR/lima", "databricks/databricks-dolly-15k",]    # [1k, 15k]
 KEYWORD = "FOLDER_DATA"     # Reads all data from the data folder
 
 def get_dataset(dataset: str):
+    """
+    This function loads datasets either from disk (if they exist) or downloads them from Hugging Face and saves them locally.
+    
+    If the dataset argument is not equal to KEYWORD, it tries to load the dataset directly from the disk using load_from_disk().
+
+    If the dataset isn't found locally, it calls parse_dataset() to download and process the dataset from Hugging Face and save 
+    it to the local disk.
+
+    If dataset == KEYWORD, it will attempt to load all datasets from the DATA_FOLDER, concatenating them into one large dataset.
+    Each dataset in the folder will be read and combined into train and test splits.
+    
+    """
 
     if dataset != KEYWORD:
 
@@ -46,6 +58,9 @@ def get_dataset(dataset: str):
                 except Exception as e:
                     print(f"Failed to load dataset from {dataset_folder}: {e}")
 
+
+    print(tokenized_dataset)
+    print(type(tokenized_dataset))
     return tokenized_dataset
     
 
