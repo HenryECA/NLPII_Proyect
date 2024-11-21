@@ -66,4 +66,4 @@ def train(model,
 
     print(f"Model and tokenizer saved to {output_dir}")
 
-    pass
+    return model
