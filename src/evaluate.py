@@ -1,5 +1,5 @@
-    from time import time
-    from datasets import load_dataset
+from time import time
+from datasets import load_dataset
 
 class PerformanceBenchmark:
     """
