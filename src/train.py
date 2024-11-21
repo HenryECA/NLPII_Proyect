@@ -9,18 +9,8 @@ def train(model,
           training_arguments,
           tokenized_dataset,
           device,
-          output_dir,
-          lora_config = None,
-          peft_config = None,
-          sft_config = None,):
+          output_dir,):
 
-
-    if lora_config:
-        '''
-        Applies LoRA to the model
-        '''
-        lora_config = lora_config
-        model = get_peft_model(model, lora_config)
 
     # if peft_config:
     #     '''
