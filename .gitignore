@@ -1,7 +1,7 @@
 src/keys_file.py
-data/
 src/data
 src/meta-llama/Llama-3.1-8B_results
 src/meta-llama
 src/results
-models/
+models/meta-llama
+src/meta-llama
