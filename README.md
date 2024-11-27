@@ -1,6 +1,6 @@
 
 # Llama 3.1 Fine-Tuning for Instruction-based tasks
-## NLP II - Final Project
+## NLP II Final Project - Rust'eze
 
 Welcome to the **NLPII_Project**, an advanced natural language processing project designed to fine-tune a pretrained model such as Llama 3.1 to improve performance in instruction-based tasks. This repository contains the code, datasets, and documentation necessary to replicate our experiments and explore the power of NLP techniques.
 
@@ -87,9 +87,9 @@ NLPII_Proyect/
 2. **Evaluate Performance - IfEval:**
 
    First, browse to the ``/IfEval`` directory.
-   Then, run `nlp_ifeval.ipynb` to compute IfEval metrics on the saved model.
+   Then, run `nlp_ifeval.ipynb` to get the IfEval responses with your best model. Remember to change the path to it. Also, if you want to see the metrics, just execute the command given in the ifeval_command.txt file on the temrinal. 
 
-   Finally, the metrics will be presented in the `ifeval_metrics.txt` file for you to check the model's performance in several different scenarios.
+   Finally, the metrics will be presented printed in the terminal to check the model's performance in several different scenarios.
    
 ---
 
