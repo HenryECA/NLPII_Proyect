@@ -4,22 +4,12 @@
 Welcome to the **NLPII_Project**, an advanced natural language processing project designed for [specific NLP tasks, e.g., text classification, sentiment analysis, or language modeling]. This repository contains the code, datasets, and documentation necessary to replicate our experiments and explore the power of NLP techniques.
 
 ## Table of Contents
-1. [Features](#features)
-2. [Installation](#installation)
-3. [Usage Instructions](#usage-instructions)
-4. [Project Structure](#project-structure)
-5. [How to Run](#how-to-run)
-6. [Fine-Tuning Configuration](#fine-tuning-configuration)
-7. [Results and Output](#results-and-output)
-
----
-
-## Features
-
-- Implements advanced NLP techniques using [frameworks such as TensorFlow, PyTorch, or Hugging Face Transformers].
-- Supports multiple datasets for [classification, generation, etc.].
-- Provides pre-trained models and scripts for fine-tuning.
-- Modularized code for easy extension and experimentation.
+1. [Installation](#installation)
+2. [Usage Instructions](#usage-instructions)
+3. [Project Structure](#project-structure)
+4. [How to Run](#how-to-run)
+5. [Fine-Tuning Configuration](#fine-tuning-configuration)
+6. [Results and Output](#results-and-output)
 
 ---
 
@@ -141,18 +131,3 @@ Make sure to update your configuration files and scripts accordingly based on th
 - Evaluation metrics, such as accuracy or BLEU scores, are printed to the console and logged in `logs/`.
 
 ---
-
-## Contributing
-
-Contributions are welcome! Please follow these steps:
-1. Fork this repository.
-2. Create a branch (`git checkout -b feature-name`).
-3. Commit your changes (`git commit -m "Add feature"`).
-4. Push to the branch (`git push origin feature-name`).
-5. Open a Pull Request.
-
----
-
-## License
-
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
