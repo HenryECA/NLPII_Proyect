@@ -1,22 +1,108 @@
-# NLPII_Proyect
 
-#### Model Selection:
-Choose a pre-trained model that balances performance with memory efficiency. Suggested models include LLama-3.1-8B, Mistral 7B v0.3, and Qwen2.5-7B.
+# Llama 3.1 Fine-Tuning for Instruction-based tasks
+## NLP II - Final Project
 
-  **Task Details**
-  Instruction-Following: The model should be fine-tuned to understand and generate responses that align with specific user instructions or queries. This is typically evaluated by assessing the model’s accuracy and coherence in following a variety of instruction types.
-  
-  Benchmark Evaluation: The model's performance is quantitatively evaluated using the IFEval benchmark, which measures the model’s effectiveness in handling instruction-following tasks.
-  
-  Qualitative Evaluation: The model’s responses are also evaluated qualitatively by peers and professors, focusing on response quality and relevance.
-  In summary, the main task is to optimize the model's instruction-following performance, making it suitable for tasks that require clear, relevant responses in a constrained computational environment.
+Welcome to the **NLPII_Project**, an advanced natural language processing project designed to fine-tune a pretrained model such as Llama 3.1 to improve performance in instruction-based tasks. This repository contains the code, datasets, and documentation necessary to replicate our experiments and explore the power of NLP techniques.
 
-#### Dataset Selection:
-Select a task-specific, high-quality dataset to maximize training effectiveness with limited data. Options include Databricks Dolly 15K, OpenAssistant Conversations Dataset, and LIMA. Ensure datasets are aligned with the model's task requirements.
+## Table of Contents
+1. [Installation](#installation)
+2. [Project Structure](#project-structure)
+3. [How to Run](#how-to-run)
+4. [Fine-Tuning Configuration](#fine-tuning-configuration)
 
-#### Training Scheme:
-Decide on a mix of fine-tuning, alignment (e.g., Reinforcement Learning from Human Feedback or Direct Preference Optimization), model compression (e.g., pruning, quantization), and hyperparameters to stay within memory and time limits.
-Use tools like Optuna for hyperparameter optimization and calculate memory usage based on the number of trainable parameters.
+---
 
-#### Model Evaluation and Checkpointing:
-Set regular checkpoints to save model states and avoid data loss due to interruptions. For final model evaluation, use IFEval and other latency benchmarks to assess performance.
+## Installation
+
+### Prerequisites
+Ensure the following software is installed:
+- Python 3.8 or higher
+- Git
+- Get a HuggingFace Token by registering at https://huggingface.co/ and creating a new token
+- Get Llama 3.1 access token by fulfilling the form at https://huggingface.co/meta-llama/Llama-3.1-8B-Instruct 
+
+### Steps
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/HenryECA/NLPII_Proyect.git
+   cd NLPII_Proyect
+   ```
+
+2. Create a virtual environment (optional but recommended):
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
+   ```
+
+3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Create a ``keys_file.py`` and include your token as TOKEN (preferably the Llama 3.1 Access Token):
+   ```bash
+   -- keys_file.py --
+
+   TOKEN = "Include your token"
+   ```
+---
+
+## Project Structure
+
+```
+NLPII_Proyect/
+│
+├── data/                 # Dataset folder
+│   ├── train.csv         # Training dataset
+│   ├── test.csv          # Testing dataset
+│   └── sample_text.txt   # Example input for inference
+│
+├── models/               # Pre-trained and saved models
+├── scripts/              # Additional utility scripts
+├── config.json           # Configuration file
+├── train.py              # Script to train the model
+├── evaluate.py           # Script for evaluation
+├── predict.py            # Script for inference
+├── main.ipynb            # Jupyter notebook for advanced configuration and experimentation
+├── requirements.txt      # Python dependencies
+└── README.md             # Documentation
+```
+
+---
+
+## How to Run
+
+1. **Execute ``main.ipynb`` with our best model:**
+   
+   Run the `main.ipynb` script with a configuration file:
+   ```bash
+   <!-- python main.ipynb  -->
+   ```
+
+   This will start the training schema (which you can avoid if you do not need to train and just want to evaluate).
+   If you indeed want to train a new model, you can change the model parameters inside the "Configurations" and "Training" sections in ``main.ipyn``. 
+   During this process, a test prompt will be tried before and after the model fine-tuning. This will help the user know objectivelly how well the model performs without chacking the ifeval metrics.
+
+
+2. **Evaluate Performance - IfEval:**
+
+   First, browse to the ``/IfEval`` directory.
+   Then, run `nlp_ifeval.ipynb` to compute IfEval metrics on the saved model.
+
+   Finally, the metrics will be presented in the `ifeval_metrics.txt` file for you to check the model's performance in several different scenarios.
+   
+---
+
+## Fine-Tuning Configuration
+
+Advanced fine-tuning techniques, such as configuring LoRA (Low-Rank Adaptation) and other fine-tuning methods, are supported in this project. To customize these configurations:
+
+1. Open the `main.ipynb` notebook in a Jupyter environment.
+2. Follow the step-by-step guide in the notebook to:
+   - Adjust specific parameters.
+   - Experiment with various fine-tuning approaches tailored to your dataset and model.
+   - Visualize and log performance metrics during fine-tuning.
+
+
+
+---
